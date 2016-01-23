@@ -22,7 +22,7 @@ function varargout = fingerprint_gui(varargin)
 
 % Edit the above text to modify the response to help fingerprint_gui
 
-% Last Modified by GUIDE v2.5 23-Jan-2016 22:25:57
+% Last Modified by GUIDE v2.5 23-Jan-2016 08:42:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -95,19 +95,12 @@ function open_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global data;
 global info;
-global type;
 [file,cancel]=imgetfile;
 if(cancel)
     errordlg('NO IMAGE SELECTED','ERROR');
 end
-info=imfinfo(file);
-type=info.ColorType;
-if(strcmp(type,'indexed'))
-    [temp,map]=imread(file);
-    data=ind2rgb(temp,map);
-else
-    data=imread(file);
-end
+data=imread(file);
+info=imfinfo(strcat(path,file));
 axes(handles.axes1);
 imshow(data);
 axes(handles.axes2);
@@ -135,10 +128,7 @@ function gray_Callback(hObject, eventdata, handles)
 % hObject    handle to gray (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global data;
-image=rgb2gray(data);
-axes(handles.axes2);
-imshow(image);
+
 % --- Executes on button press in ext.
 function ext_Callback(hObject, eventdata, handles)
 % hObject    handle to ext (see GCBO)
@@ -153,10 +143,10 @@ function binary_Callback(hObject, eventdata, handles)
 % hObject    handle to binary (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global data;
-image=im2bw(data);
-axes(handles.axes2);
-imshow(image);
+global info;
+image=getimage(handles.axes2);
+type
+
 % --- Executes on button press in clear.
 function clear_Callback(hObject, eventdata, handles)
 % hObject    handle to clear (see GCBO)
